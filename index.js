@@ -1,11 +1,11 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const generateHTML = require('./html_template.js');
 
 const employee = require("./Classes/employee");
 const manager = require("./Classes/manager");
 const engineer = require("./Classes/engineer");
 const intern = require("./Classes/intern");
-
 
 const generalQuestions = [
   {
@@ -73,60 +73,55 @@ const internQuestions = [
   },
 ];
 
-function generateHTML() {
+function writeToFile(data) {
   console.log("This will generate your team's site");
+  fs.writeFile("teams.html", data, function (err) {
+    if (err) throw err;
+  });
 }
-// newEngineer = new Engineer("L", "1", "email@example.com", "githubuser", "Engineer");
-// fs.writeFileSync("./public/team.html", generatehtml(teamArray));
 
 function init() {
-  inquirer
-    .prompt(generalQuestions)
-    .then((answers) => {
-      if (answers.role === "Engineer") {
-        engineerPrompt();
-      } else if(answers.role === "Manager") {
-        managerPrompt();
-      } else {
+  inquirer.prompt(generalQuestions).then((answers) => {
+    if (answers.role === "Engineer") {
+      engineerPrompt();
+    } else if (answers.role === "Manager") {
+      managerPrompt();
+    } else {
       internPrompt();
     }
-  })
-};
+  });
+}
 
 function engineerPrompt() {
-  inquirer
-    .prompt(engineerQuestions)
-    .then((answers) => {
-      if (answers.addMore === true) {
-        init();
-      } else {
-
-      }
-    })
+  inquirer.prompt(engineerQuestions).then((answers) => {
+    if (answers.addMore === true) {
+      init();
+    } else {
+      const templateHTML = generateHTML(answers);
+      writeToFile(templateHTML);
+    }
+  });
 }
 
 function managerPrompt() {
-  inquirer
-    .prompt(managerQuestions)
-    .then((answers) => {
-      if (answers.addMore === true) {
-        init();
-      } else {
-
-      }
-    })
+  inquirer.prompt(managerQuestions).then((answers) => {
+    if (answers.addMore === true) {
+      init();
+    } else {
+      const templateHTML = generateHTML(answers);
+      writeToFile(templateHTML);
+    }
+  });
 }
 
 function internPrompt() {
-  inquirer
-    .prompt(internQuestions)
-    .then((answers) => {
-      if (answers.addMore === true) {
-        init();
-      } else {
-        generateHTML();
-      }
-    })
+  inquirer.prompt(internQuestions).then((answers) => {
+    if (answers.addMore === true) {
+      init();
+    } else {
+      generateHTML();
+    }
+  });
 }
 
 init();
