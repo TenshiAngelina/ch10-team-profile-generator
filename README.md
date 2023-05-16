@@ -30,6 +30,7 @@ After all questions are answered, the website is generated.
 
 ![Screenshot of the questions in the terminal](assets/images/terminal-questions.png)
 
+An example on how to use it in the following video [example](https://youtu.be/4SO7MyCF4tw)
 
 ## Credits
 
